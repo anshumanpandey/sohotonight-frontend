@@ -49,7 +49,7 @@ export const Routes = withRouter(({ history }) => {
           <Redirect to="/auth/registration" />
         ) : (
           <Layout>
-            <HomePage userLastLocation={userLastLocation} />
+            <HomePage userLastLocation={"partners"} />
           </Layout>
         )}
       </Switch>

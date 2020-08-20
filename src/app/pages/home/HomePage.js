@@ -3,11 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Builder from "./Builder";
 import Dashboard from "./Dashboard";
 import Partners from "../partners/Partners.page";
-import Reward from "../reward/Reward.page";
-import Order from "../order/Order.page";
-import DocsPage from "./docs/DocsPage";
 import { LayoutSplashScreen } from "../../../_metronic";
-import ReferralProgram from "../referralProgram/ReferralProgram.page";
 import { connect } from "react-redux";
 
 const GoogleMaterialPage = lazy(() =>
@@ -26,14 +22,7 @@ function HomePage(props) {
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
       <Switch>
-        {
-          /* Redirect from root URL to /dashboard. */
-          <Redirect exact from="/" to="/dashboard" />
-        }
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/referalProgram" component={ReferralProgram} />
-        <Route path="/reward" component={Reward} />
-        <Route path="/order" component={Order} />
+        <Route path="/" component={Partners} />
         <Redirect to="/error/error-v1" />
       </Switch>
     </Suspense>
