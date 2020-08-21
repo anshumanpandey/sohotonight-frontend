@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FormattedMessage, injectIntl } from "react-intl";
-import { Select, TextField, MenuItem, FormControl, InputLabel, makeStyles } from "@material-ui/core";
+import { Select, TextField, MenuItem, FormControl, InputLabel, makeStyles, Button, Typography } from "@material-ui/core";
 import * as auth from "../../store/ducks/auth.duck";
 import { register } from "../../crud/auth.crud";
 
@@ -44,6 +44,7 @@ function Registration(props) {
               age: "",
               role: "",
               location: "",
+              profilePic: "",
             }}
             validate={values => {
               const errors = {};
@@ -111,10 +112,22 @@ function Registration(props) {
                 });
               }
 
+              if (!values.profilePic) {
+                errors.profilePic = intl.formatMessage({
+                  id: "AUTH.VALIDATION.REQUIRED_FIELD"
+                });
+              }
+
               return errors;
             }}
             onSubmit={(values, { setStatus, setSubmitting }) => {
-              register(values)
+              const data = new FormData();
+
+              Object.keys(values).forEach(k => {
+                data.append(k, values[k])
+              })
+
+              register(data)
                 .then(({ data: { token } }) => {
                   setRegisterSuccess(true)
                 })
@@ -266,6 +279,35 @@ function Registration(props) {
                       )}
                     />
                   </div>
+
+                  <div className="form-group">
+
+                    <input
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="contained-button-file"
+                      multiple={false}
+                      type="file"
+                      onChange={(e) => {
+                        setFieldValue("profilePic", e.target.files[0])
+
+                        var oFReader = new FileReader();
+                        oFReader.readAsDataURL(e.target.files[0]);
+
+                        oFReader.onload = function (oFREvent) {
+                          setFieldValue("imagePreview", oFREvent.target.result)
+                        };
+                      }}
+                    />
+                    <label htmlFor="contained-button-file">
+                      <Button variant="contained" color="primary" component="span">
+                        Upload
+                      </Button>
+                    </label>
+                    {touched.profilePic && errors.profilePic && <Typography style={{ color: "#fd397a", fontSize: "0.75rem"}}>{errors.profilePic}</Typography>}
+                  </div>
+
+                  {values.imagePreview && <img src={values.imagePreview} style={{ width: '100px', height: '100px' }} />}
 
                   <div className="kt-login__actions">
                     <button

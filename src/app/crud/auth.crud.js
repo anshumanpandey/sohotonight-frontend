@@ -10,8 +10,12 @@ export function login(email, password) {
   return axios.post(LOGIN_URL, { email, password });
 }
 
-export function register(values) {
-  return axios.post(REGISTER_URL, values);
+export function register(data) {
+  return axios({
+    url: REGISTER_URL,
+    method: "POST",
+    data
+  });
 }
 
 export function requestPassword(email) {
