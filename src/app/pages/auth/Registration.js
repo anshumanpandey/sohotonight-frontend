@@ -123,6 +123,8 @@ function Registration(props) {
             onSubmit={(values, { setStatus, setSubmitting }) => {
               const data = new FormData();
 
+              delete values.imagePreview
+
               Object.keys(values).forEach(k => {
                 data.append(k, values[k])
               })
